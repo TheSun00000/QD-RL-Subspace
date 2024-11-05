@@ -78,11 +78,11 @@ class ActorCriticCategorical(nn.Module):
         value = self.critic(x)
         
         return action, log_p, value, dist.entropy()
-    
-    
-    
-    
-    
+
+
+
+
+
 class ActorCriticContinuous(nn.Module):
     def __init__(self, n_anchors, state_dim, action_dim, same_init, actor_hidden_layers, critic_hidden_layers, action_std):
         super(ActorCriticContinuous, self).__init__()
@@ -124,3 +124,21 @@ class ActorCriticContinuous(nn.Module):
         value = self.critic(x)
         
         return action, log_p, value, dist.entropy()
+    
+    
+    def cosine_similarity(self,i,j):
+        assert (i < self.n_anchors) and (j < self.n_anchors), "index higher than n_anchors"
+        cos_sim = torch.Tensor([0.]).to(list(self.parameters())[0].device)
+        n = 0
+        for module in self.actor:
+            if isinstance(module,Linear):
+                w1 = module.anchors[i].weight
+                w2 = module.anchors[j].weight
+                p1 = ((w1 * w2).sum() / max(((w1 ** 2).sum().sqrt() * (w2 ** 2).sum().sqrt()),1e-8)) ** 2
+                b1 = module.anchors[i].bias
+                b2 = module.anchors[j].bias
+                p2 = ((b1 * b2).sum() / max(((b1 ** 2).sum().sqrt() * (b2 ** 2).sum().sqrt()),1e-8)) ** 2
+                cos_sim += p1 + p2
+                n += 2
+        return cos_sim / n
+    
