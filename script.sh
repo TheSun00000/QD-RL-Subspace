@@ -24,6 +24,6 @@ python train.py \
     --len_trajectory 1024 \
     --batch_size 64 \
     --mode async \
-    --actor_hidden_layers 64 64 64 64 \
-    --critic_hidden_layers 256 256 256 256 \
+    --actor_hidden_layers 256 256 \
+    --critic_hidden_layers 256 256 \
 

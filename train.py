@@ -272,7 +272,7 @@ def main(args):
     
     now = datetime.now()
     formatted_time = now.strftime("%d.%m.%Y-%H:%M:%S")
-    save_folder = f'/scratch/nb3891/Script/QD-RL-Subspace/models/halfcheetah/{formatted_time}'
+    save_folder = f'./models/halfcheetah/{formatted_time}'
     os.mkdir(save_folder)
     
     neptune_run = init_neptune(
